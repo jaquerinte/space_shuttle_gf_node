@@ -1,21 +1,29 @@
 {
     "DESIGN_NAME": "user_proj_example",
     "DESIGN_IS_CORE": 0,
-    "VERILOG_FILES": ["dir::../../verilog/rtl/defines.v", "dir::../../verilog/rtl/user_proj_example.v"],
+    "VERILOG_FILES": ["dir::../../verilog/rtl/defines.v", 
+    "dir::../../verilog/rtl/user_proj_example.v", 
+    "dir::../../verilog/rtl/ecc_registers/register_file.v",
+    "dir::../../verilog/rtl/ecc_registers/register_data.v",
+    "dir::../../verilog/rtl/ecc_registers/data_verificator.v",
+    "dir::../../verilog/rtl/ecc_registers/decoder_output.v",
+    "dir::../../verilog/rtl/ecc_registers/parity_calculator.v"],
+    "VERILOG_FILES_BLACKBOX": ["dir::../../verilog/rtl/state_counters.v"],
     "CLOCK_PERIOD": 10,
-    "CLOCK_PORT": "wb_clk_i",
-    "CLOCK_NET": "counter.clk",
+    "CLOCK_PORT": "",
+    "CLOCK_NET": "register_file.clk_i",
     "FP_SIZING": "absolute",
-    "DIE_AREA": "0 0 900 600",
+    "DIE_AREA": "0 0 1900 1900",
     "FP_PIN_ORDER_CFG": "dir::pin_order.cfg",
     "PL_BASIC_PLACEMENT": 0,
     "PL_TARGET_DENSITY": 0.55,
     "VDD_NETS": ["vccd1"],
     "GND_NETS": ["vssd1"],
+    "ROUTING_CORES": 16,
     "DIODE_INSERTION_STRATEGY": 4,
     "RUN_CVC": 1,
     "pdk::sky130*": {
-        "FP_CORE_UTIL": 45,
+        "FP_CORE_UTIL": 60,
         "RT_MAX_LAYER": "met4",
         "scl::sky130_fd_sc_hd": {
             "CLOCK_PERIOD": 10
@@ -37,9 +45,9 @@
     "pdk::gf180mcuC": {
         "STD_CELL_LIBRARY": "gf180mcu_fd_sc_mcu7t5v0",
         "CLOCK_PERIOD": 24.0,
-        "FP_CORE_UTIL": 40,
+        "FP_CORE_UTIL": 100,
         "RT_MAX_LAYER": "Metal4",
         "SYNTH_MAX_FANOUT": 4,
-        "PL_TARGET_DENSITY": 0.45
+        "PL_TARGET_DENSITY": 0.52
     }
 }
