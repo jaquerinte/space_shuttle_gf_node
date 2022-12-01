@@ -7,8 +7,8 @@
     "CLOCK_PORT": "clk_i",
     "FP_SIZING": "absolute",
     "CLOCK_NET": "state_counters.clk_i",
+    "GRT_ALLOW_CONGESTION": 1,
     "PL_BASIC_PLACEMENT": 0,
-    "PL_TARGET_DENSITY": 0.22,
     "VDD_NETS": ["vccd1"],
     "GND_NETS": ["vssd1"],
     "ROUTING_CORES": 16,
@@ -38,9 +38,9 @@
         "STD_CELL_LIBRARY": "gf180mcu_fd_sc_mcu7t5v0",
         "CLOCK_PERIOD": 24.0,
         "FP_SIZING": "absolute",
-        "DIE_AREA": "0 0 1400 1400",
+        "DIE_AREA": "0 0 2400  2400 ",
         "RT_MAX_LAYER": "Metal4",
         "SYNTH_MAX_FANOUT": 4,
-        "PL_TARGET_DENSITY": 0.42
+        "PL_TARGET_DENSITY": 0.50
     }
 }

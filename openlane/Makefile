@@ -28,8 +28,9 @@ openlane_cmd = \
 	-save \
 	-tag $(OPENLANE_RUN_TAG) \
 	-overwrite \
+	-allow_overflow \
 	-ignore_mismatches"
-openlane_cmd_interactive = "flow.tcl -it -file $$(realpath ./$*/interactive.tcl)"
+openlane_cmd_interactive = "flow.tcl -it -file $$(realpath ./$*/interactive.tcl) "
 
 docker_mounts = \
 	-v $$(realpath $(PWD)/..):$$(realpath $(PWD)/..) \
