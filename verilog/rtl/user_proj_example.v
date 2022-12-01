@@ -17,7 +17,7 @@
 /*
  *-------------------------------------------------------------
  *
- * user_proj
+ * user_proj_example
  *
  * This is an example of a (trivially simple) user project,
  * showing how the user project can connect to the logic
@@ -45,42 +45,41 @@ module user_proj_example #(
     parameter integer COUNTERSIZE = 32
 )(
 `ifdef USE_POWER_PINS
-    inout vccd1,	// User area 1 1.8V supply
-    inout vssd1,	// User area 1 digital ground
+    inout vdd,	// User area 1 1.8V supply
+    inout vss,	// User area 1 digital ground
 `endif
 
     // Wishbone Slave ports (WB MI A)
-    input wire wb_clk_i,
-    input wire wb_rst_i,
-    input wire wbs_stb_i,
-    input wire wbs_cyc_i,
-    input wire wbs_we_i,
-    input wire [3:0] wbs_sel_i,
-    input wire [31:0] wbs_dat_i,
-    input wire [31:0] wbs_adr_i,
-    output wire wbs_ack_o,
-    output wire [31:0] wbs_dat_o,
+    input wb_clk_i,
+    input wb_rst_i,
+    input wbs_stb_i,
+    input wbs_cyc_i,
+    input wbs_we_i,
+    input [3:0] wbs_sel_i,
+    input [31:0] wbs_dat_i,
+    input [31:0] wbs_adr_i,
+    output wbs_ack_o,
+    output [31:0] wbs_dat_o,
 
     // Logic Analyzer Signals
-    input  wire [127:0] la_data_in,
-    output wire [127:0] la_data_out,
-    input  wire [127:0] la_oenb,
+    input  [63:0] la_data_in,
+    output [63:0] la_data_out,
+    input  [63:0] la_oenb,
 
     // IOs
-    input  wire [`MPRJ_IO_PADS-1:0] io_in,
-    output wire [`MPRJ_IO_PADS-1:0] io_out,
-    output wire [`MPRJ_IO_PADS-1:0] io_oeb,
+    input  [`MPRJ_IO_PADS-1:0] io_in,
+    output [`MPRJ_IO_PADS-1:0] io_out,
+    output [`MPRJ_IO_PADS-1:0] io_oeb,
 
     // IRQ
-    output wire [2:0] irq,
-
-    // User CLK
-    
-    input user_clk
+    output [2:0] irq
 );
     wire clk;
     wire rst;
 
+    wire [`MPRJ_IO_PADS-1:0] io_in;
+    wire [`MPRJ_IO_PADS-1:0] io_out;
+    wire [`MPRJ_IO_PADS-1:0] io_oeb;
 
     wire [WORD_SIZE-1:0] rdata; 
     wire [WORD_SIZE-1:0] wdata;
@@ -90,7 +89,7 @@ module user_proj_example #(
 
     wire valid;
     wire [3:0] wstrb;
-    wire [WORD_SIZE-1:0] la_write;
+    wire [31:0] la_write;
 
     // WB MI A
     assign valid = wbs_cyc_i && wbs_stb_i; 
@@ -100,19 +99,18 @@ module user_proj_example #(
 
     // IO
     assign io_out = {output_verification,output_data[15:0],operational, 19'b0};//{6'b000000,output_data};b
-    assign io_oeb = {(`MPRJ_IO_PADS-1){rst}};
+    assign io_oeb = {(`MPRJ_IO_PADS-1){rst}}
 
     // IRQ
     assign irq = 3'b000;	// Unused
 
-    // LA probes 
-    // Assuming LA probes [65:64] are for controlling the count clk & reset  
-    assign clk = (~la_oenb[66]) ? (~la_oenb[65] ? la_data_in[64] : user_clk ) : wb_clk_i;
-    //assign clk = (~la_oenb[64]) ? la_data_in[64]: wb_clk_i;
-    assign rst = (~la_oenb[65]) ? la_data_in[65]: wb_rst_i;
-    // Assuming LA probes [63:32] are for controlling the input data
-    //assign la_write = ~la_oenb[63:32] & ~{WORD_SIZE{valid}};
-    assign la_data_out = {output_data, output_verification,operational,{(127-WORD_SIZE+VERIFICATION_PINS+1){1'b0}}};
+    // LA
+    assign la_data_out = {{(64-WORD_SIZE+VERIFICATION_PINS+1){1'b0}}, output_data, output_verification,operational};
+    // Assuming LA probes [63:32] are for controlling the count register  
+    
+    assign clk = (~la_oenb[31]) ? (~la_oenb[65] ? la_data_in[29] : user_clk ) : wb_clk_i;
+    //assign clk = (~la_oenb[29]) ? la_data_in[29]: wb_clk_i;
+    assign rst = (~la_oenb[30]) ? la_data_in[65]: wb_rst_i;
 
     register_file #(
         .WORD_SIZE (WORD_SIZE),
@@ -153,4 +151,5 @@ module user_proj_example #(
     );
 
 endmodule
+
 `default_nettype wire

@@ -31,51 +31,39 @@
 
 module user_project_wrapper #(
     parameter BITS = 32
-) (
+)(
 `ifdef USE_POWER_PINS
-    inout vdda1,	// User area 1 3.3V supply
-    inout vdda2,	// User area 2 3.3V supply
-    inout vssa1,	// User area 1 analog ground
-    inout vssa2,	// User area 2 analog ground
-    inout vccd1,	// User area 1 1.8V supply
-    inout vccd2,	// User area 2 1.8v supply
-    inout vssd1,	// User area 1 digital ground
-    inout vssd2,	// User area 2 digital ground
+    inout vdd,		// User area 5.0V supply
+    inout vss,		// User area ground
 `endif
 
     // Wishbone Slave ports (WB MI A)
-    input wire wb_clk_i,
-    input wire wb_rst_i,
-    input wire wbs_stb_i,
-    input wire wbs_cyc_i,
-    input wire wbs_we_i,
-    input wire [3:0] wbs_sel_i,
-    input wire [31:0] wbs_dat_i,
-    input wire [31:0] wbs_adr_i,
-    output wire wbs_ack_o,
-    output wire [31:0] wbs_dat_o,
+    input wb_clk_i,
+    input wb_rst_i,
+    input wbs_stb_i,
+    input wbs_cyc_i,
+    input wbs_we_i,
+    input [3:0] wbs_sel_i,
+    input [31:0] wbs_dat_i,
+    input [31:0] wbs_adr_i,
+    output wbs_ack_o,
+    output [31:0] wbs_dat_o,
 
     // Logic Analyzer Signals
-    input  wire [127:0] la_data_in,
-    output wire [127:0] la_data_out,
-    input  wire [127:0] la_oenb,
+    input  [63:0] la_data_in,
+    output [63:0] la_data_out,
+    input  [63:0] la_oenb,
 
     // IOs
-    input  wire [`MPRJ_IO_PADS-1:0] io_in,
-    output wire [`MPRJ_IO_PADS-1:0] io_out,
-    output wire [`MPRJ_IO_PADS-1:0] io_oeb,
-
-    // Analog (direct connection to GPIO pad---use with caution)
-    // Note that analog I/O is not available on the 7 lowest-numbered
-    // GPIO pads, and so the analog_io indexing is offset from the
-    // GPIO indexing by 7 (also upper 2 GPIOs do not have analog_io).
-    inout wire [`MPRJ_IO_PADS-10:0] analog_io,
+    input  [`MPRJ_IO_PADS-1:0] io_in,
+    output [`MPRJ_IO_PADS-1:0] io_out,
+    output [`MPRJ_IO_PADS-1:0] io_oeb,
 
     // Independent clock (on independent integer divider)
-    input  wire user_clock2,
+    input   user_clock2,
 
     // User maskable interrupt signals
-    output wire [2:0] user_irq
+    output [2:0] user_irq
 );
 
 /*--------------------------------------*/
@@ -84,8 +72,8 @@ module user_project_wrapper #(
 
 user_proj_example mprj (
 `ifdef USE_POWER_PINS
-	.vccd1(vccd1),	// User area 1 1.8V power
-	.vssd1(vssd1),	// User area 1 digital ground
+	.vdd(vdd),	// User area 1 1.8V power
+	.vss(vss),	// User area 1 digital ground
 `endif
 
     .wb_clk_i(wb_clk_i),
@@ -115,10 +103,7 @@ user_proj_example mprj (
     .io_oeb(io_oeb),
 
     // IRQ
-    .irq(user_irq),
-
-    // user clock
-    .user_clk(user_clock2)
+    .irq(user_irq)
 );
 
 endmodule	// user_project_wrapper

@@ -28,7 +28,7 @@
 module register_file #(
         parameter integer WORD_SIZE = 32,
         parameter integer REGISTERS = 32,
-        parameter integer REGDIRSIZE = 5,
+        parameter integer REGDIRSIZE = 4,
         parameter integer ECCBITS = 7,
         parameter integer WHISBONE_ADR = 32,
         parameter integer VERIFICATION_PINS = 2,

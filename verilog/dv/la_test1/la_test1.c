@@ -28,7 +28,26 @@
 		- Flags when counter value exceeds 500 through the management SoC gpio
 		- Outputs message to the UART when the test concludes successfuly
 */
+int clk = 0;
 
+void clock(){
+	// clock
+	reg_la2_data = 0x00000001;
+	reg_la2_data = 0x00000000;
+	// end clock
+}
+
+void add_value_to_register(uint32_t value, uint32_t selected_register){
+
+	reg_la0_data = (selected_register << 5| 2 & 0x1F);
+	reg_la1_data = value;
+}
+
+void read_value_from_register(uint32_t selected_register){
+
+	reg_la0_data = (selected_register << 5| 1 & 0x1F);
+
+}
 void main()
 {
 	int j;
@@ -58,22 +77,22 @@ void main()
 	// logic analyzer probes.
 	// I/O 6 is configured for the UART Tx line
 
-        reg_mprj_io_31 = GPIO_MODE_MGMT_STD_OUTPUT;
-        reg_mprj_io_30 = GPIO_MODE_MGMT_STD_OUTPUT;
-        reg_mprj_io_29 = GPIO_MODE_MGMT_STD_OUTPUT;
-        reg_mprj_io_28 = GPIO_MODE_MGMT_STD_OUTPUT;
-        reg_mprj_io_27 = GPIO_MODE_MGMT_STD_OUTPUT;
-        reg_mprj_io_26 = GPIO_MODE_MGMT_STD_OUTPUT;
-        reg_mprj_io_25 = GPIO_MODE_MGMT_STD_OUTPUT;
-        reg_mprj_io_24 = GPIO_MODE_MGMT_STD_OUTPUT;
-        reg_mprj_io_23 = GPIO_MODE_MGMT_STD_OUTPUT;
-        reg_mprj_io_22 = GPIO_MODE_MGMT_STD_OUTPUT;
-        reg_mprj_io_21 = GPIO_MODE_MGMT_STD_OUTPUT;
-        reg_mprj_io_20 = GPIO_MODE_MGMT_STD_OUTPUT;
-        reg_mprj_io_19 = GPIO_MODE_MGMT_STD_OUTPUT;
-        reg_mprj_io_18 = GPIO_MODE_MGMT_STD_OUTPUT;
-        reg_mprj_io_17 = GPIO_MODE_MGMT_STD_OUTPUT;
-        reg_mprj_io_16 = GPIO_MODE_MGMT_STD_OUTPUT;
+        reg_mprj_io_31 = GPIO_MODE_USER_STD_OUTPUT;
+        reg_mprj_io_30 = GPIO_MODE_USER_STD_OUTPUT;
+        reg_mprj_io_29 = GPIO_MODE_USER_STD_OUTPUT;
+        reg_mprj_io_28 = GPIO_MODE_USER_STD_OUTPUT;
+        reg_mprj_io_27 = GPIO_MODE_USER_STD_OUTPUT;
+        reg_mprj_io_26 = GPIO_MODE_USER_STD_OUTPUT;
+        reg_mprj_io_25 = GPIO_MODE_USER_STD_OUTPUT;
+        reg_mprj_io_24 = GPIO_MODE_USER_STD_OUTPUT;
+        reg_mprj_io_23 = GPIO_MODE_USER_STD_OUTPUT;
+        reg_mprj_io_22 = GPIO_MODE_USER_STD_OUTPUT;
+        reg_mprj_io_21 = GPIO_MODE_USER_STD_OUTPUT;
+        reg_mprj_io_20 = GPIO_MODE_USER_STD_OUTPUT;
+        reg_mprj_io_19 = GPIO_MODE_USER_STD_OUTPUT;
+        reg_mprj_io_18 = GPIO_MODE_USER_STD_OUTPUT;
+        reg_mprj_io_17 = GPIO_MODE_USER_STD_OUTPUT;
+        reg_mprj_io_16 = GPIO_MODE_USER_STD_OUTPUT;
 
         reg_mprj_io_15 = GPIO_MODE_USER_STD_OUTPUT;
         reg_mprj_io_14 = GPIO_MODE_USER_STD_OUTPUT;
@@ -101,30 +120,37 @@ void main()
     reg_mprj_xfer = 1;
     while (reg_mprj_xfer == 1);
 
-    // Configure LA probes [31:0], [127:64] as inputs to the cpu 
-	// Configure LA probes [63:32] as outputs from the cpu
-	reg_la0_oenb = reg_la0_iena = 0x00000000;    // [31:0]
-	reg_la1_oenb = reg_la1_iena = 0xFFFFFFFF;    // [63:32]
-	reg_la2_oenb = reg_la2_iena = 0x00000000;    // [95:64]
-	reg_la3_oenb = reg_la3_iena = 0x00000000;    // [127:96]
+	// Configure LA probes 
+	// outputs from the cpu are inputs for my project denoted for been 0 
+	// inputs to the cpu are outpus for my project denoted for been 1
+	reg_la0_oenb = reg_la0_iena = 0x00000000;    // [31:0] 
+	reg_la1_oenb = reg_la1_iena = 0x00000000;    // [63:32]
+	reg_la2_oenb = reg_la2_iena = 0xFFFFFFF8;    // [95:64]
+	reg_la3_oenb = reg_la3_iena = 0xFFFFFFFF;    // [127:96]
 
+	
 	// Flag start of the test 
 	reg_mprj_datal = 0xAB400000;
+	reg_la2_data = 0x00000003;
+	reg_la2_data = 0x00000000;
+	
+	add_value_to_register(1, 1);
+	clock();
+	add_value_to_register(2, 2);
+	clock();
+	read_value_from_register(2);
+	clock();
+	read_value_from_register(1);
+	clock();
 
-	// Set Counter value to zero through LA probes [63:32]
-	reg_la1_data = 0x00000000;
-
-	// Configure LA probes from [63:32] as inputs to disable counter write
-	reg_la1_oenb = reg_la1_iena = 0x00000000;    
-
-	while (1) {
-		if (reg_la0_data_in > 0x1F4) {
-			reg_mprj_datal = 0xAB410000;
-			break;
-		}
-	}
+	reg_mprj_datal = 0xAB410000;
 	print("\n");
 	print("Monitor: Test 1 Passed\n\n");	// Makes simulation very long!
 	reg_mprj_datal = 0xAB510000;
+	
+
+
+
+	
 }
 

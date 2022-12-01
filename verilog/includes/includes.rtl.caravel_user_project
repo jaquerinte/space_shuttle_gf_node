@@ -1,5 +1,9 @@
 # Caravel user project includes
 -v $(USER_PROJECT_VERILOG)/rtl/user_project_wrapper.v	     
 -v $(USER_PROJECT_VERILOG)/rtl/user_proj_example.v
-
- 
+-v $(USER_PROJECT_VERILOG)/ecc_registers/register_file.v
+-v $(USER_PROJECT_VERILOG)/ecc_registers/register_data.v
+-v $(USER_PROJECT_VERILOG)/ecc_registers/data_verificator.v
+-v $(USER_PROJECT_VERILOG)/ecc_registers/decoder_output.v
+-v $(USER_PROJECT_VERILOG)/ecc_registers/parity_calculator.v
+-v $(USER_PROJECT_VERILOG)/ecc_registers/state_counters.v

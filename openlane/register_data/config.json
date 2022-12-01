@@ -1,0 +1,51 @@
+{
+    "DESIGN_NAME": "register_file",
+    "DESIGN_IS_CORE": 0,
+    "VERILOG_FILES": ["dir::../../verilog/rtl/defines.v", 
+    "dir::../../verilog/rtl/user_proj_example.v", 
+    "dir::../../verilog/rtl/ecc_registers/register_file.v",
+    "dir::../../verilog/rtl/ecc_registers/register_data.v",
+    "dir::../../verilog/rtl/ecc_registers/data_verificator.v",
+    "dir::../../verilog/rtl/ecc_registers/decoder_output.v",
+    "dir::../../verilog/rtl/ecc_registers/parity_calculator.v"],
+    "CLOCK_PERIOD": 10,
+    "CLOCK_PORT": "clk_i",
+    "FP_SIZING": "absolute",
+    "CLOCK_NET": "register_file.clk_i",
+    "PL_BASIC_PLACEMENT": 0,
+    "GLB_RT_TILES": 30,
+    "PL_TARGET_DENSITY": 0.22,
+    "VDD_NETS": ["vccd1"],
+    "GND_NETS": ["vssd1"],
+    "DIODE_INSERTION_STRATEGY": 4,
+    "RUN_CVC": 1,
+    "pdk::sky130*": {
+        "FP_CORE_UTIL": 60,
+        "RT_MAX_LAYER": "met4",
+        "scl::sky130_fd_sc_hd": {
+            "CLOCK_PERIOD": 10
+        },
+        "scl::sky130_fd_sc_hdll": {
+            "CLOCK_PERIOD": 10
+        },
+        "scl::sky130_fd_sc_hs": {
+            "CLOCK_PERIOD": 8
+        },
+        "scl::sky130_fd_sc_ls": {
+            "CLOCK_PERIOD": 10,
+            "SYNTH_MAX_FANOUT": 5
+        },
+        "scl::sky130_fd_sc_ms": {
+            "CLOCK_PERIOD": 10
+        }
+    },
+    "pdk::gf180mcuC": {
+        "STD_CELL_LIBRARY": "gf180mcu_fd_sc_mcu7t5v0",
+        "CLOCK_PERIOD": 24.0,
+        "FP_SIZING": "relative",
+        "FP_CORE_UTIL": 50,
+        "RT_MAX_LAYER": "Metal4",
+        "SYNTH_MAX_FANOUT": 4,
+        "PL_TARGET_DENSITY": 0.62
+    }
+}

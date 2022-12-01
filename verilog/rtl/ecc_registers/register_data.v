@@ -26,8 +26,8 @@
 module register_data #(
         parameter integer WORD_SIZE = 32,
         parameter integer REGISTERS = 32,
-        parameter integer SEGMENTS = 8 ,
-        parameter integer REGDIRSIZE = 5,
+        parameter integer SEGMENTS = 4 ,
+        parameter integer REGDIRSIZE = 4,
         parameter integer ECCBITS = 7,
         parameter integer WHISBONE_ADR = 32,
         parameter [19:0]  ADDRBASE     = 20'h3010_0
@@ -131,10 +131,10 @@ module register_data #(
             r[1] = {((REGISTERS/ SEGMENTS) * (WORD_SIZE + ECCBITS)){1'b0}};
             r[2] = {((REGISTERS/ SEGMENTS) * (WORD_SIZE + ECCBITS)){1'b0}};
             r[3] = {((REGISTERS/ SEGMENTS) * (WORD_SIZE + ECCBITS)){1'b0}};
-            r[4] = {((REGISTERS/ SEGMENTS) * (WORD_SIZE + ECCBITS)){1'b0}};
-            r[5] = {((REGISTERS/ SEGMENTS) * (WORD_SIZE + ECCBITS)){1'b0}};
-            r[6] = {((REGISTERS/ SEGMENTS) * (WORD_SIZE + ECCBITS)){1'b0}};
-            r[7] = {((REGISTERS/ SEGMENTS) * (WORD_SIZE + ECCBITS)){1'b0}};
+            //r[4] = {((REGISTERS/ SEGMENTS) * (WORD_SIZE + ECCBITS)){1'b0}};
+            //r[5] = {((REGISTERS/ SEGMENTS) * (WORD_SIZE + ECCBITS)){1'b0}};
+            //r[6] = {((REGISTERS/ SEGMENTS) * (WORD_SIZE + ECCBITS)){1'b0}};
+            //r[7] = {((REGISTERS/ SEGMENTS) * (WORD_SIZE + ECCBITS)){1'b0}};
             ready_o <= 1'b0;
             store_data_o <= {WORD_SIZE + ECCBITS{1'b0}};
             redundat_validation_o <= 2'b00;
