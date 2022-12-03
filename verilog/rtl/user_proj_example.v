@@ -38,7 +38,7 @@
 module user_proj_example #(
     parameter integer WORD_SIZE = 32,
     parameter integer REGISTERS = 32,
-    parameter integer REGDIRSIZE = 5,
+    parameter integer REGDIRSIZE = 4,
     parameter integer ECCBITS = 7,
     parameter integer VERIFICATION_PINS = 2,
     parameter integer WHISBONE_ADR = 32,
@@ -99,7 +99,7 @@ module user_proj_example #(
 
     // IO
     assign io_out = {output_verification,output_data[15:0],operational, 19'b0};//{6'b000000,output_data};b
-    assign io_oeb = {(`MPRJ_IO_PADS-1){rst}}
+    assign io_oeb = {(`MPRJ_IO_PADS-1){rst}};
 
     // IRQ
     assign irq = 3'b000;	// Unused
@@ -108,9 +108,9 @@ module user_proj_example #(
     assign la_data_out = {{(64-WORD_SIZE+VERIFICATION_PINS+1){1'b0}}, output_data, output_verification,operational};
     // Assuming LA probes [63:32] are for controlling the count register  
     
-    assign clk = (~la_oenb[31]) ? (~la_oenb[65] ? la_data_in[29] : user_clk ) : wb_clk_i;
+    assign clk = (~la_oenb[31]) ? (~la_oenb[30] ? la_data_in[29] : user_clk ) : wb_clk_i;
     //assign clk = (~la_oenb[29]) ? la_data_in[29]: wb_clk_i;
-    assign rst = (~la_oenb[30]) ? la_data_in[65]: wb_rst_i;
+    assign rst = (~la_oenb[30]) ? la_data_in[30]: wb_rst_i;
 
     register_file #(
         .WORD_SIZE (WORD_SIZE),

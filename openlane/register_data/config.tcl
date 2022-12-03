@@ -24,19 +24,18 @@ set ::env(VERILOG_FILES) "\
 
 set ::env(DESIGN_IS_CORE) 0
 
-set ::env(CLOCK_PORT) "register_data.clk_i"
-set ::env(CLOCK_NET) "counter.clk"
-set ::env(CLOCK_PERIOD) "24.0"
+set ::env(CLOCK_PORT) "clk_i"
+set ::env(CLOCK_NET) "register_data.clk"
+set ::env(CLOCK_PERIOD) "100.0"
 
 set ::env(FP_SIZING) absolute
-set ::env(DIE_AREA) "0 0 1400 1400"
+set ::env(DIE_AREA) "0 0 1800 1800"
 
 # set ::env(FP_PIN_ORDER_CFG) $::env(DESIGN_DIR)/pin_order.cfg
 
 set ::env(PL_BASIC_PLACEMENT) 0
-set ::env(PL_TARGET_DENSITY) 0.42
+#set ::env(PL_TARGET_DENSITY) 0.30
 
-set ::env(FP_CORE_UTIL) 40
 
 set ::env(SYNTH_MAX_FANOUT) 4
 

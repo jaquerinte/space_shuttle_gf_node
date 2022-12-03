@@ -27,9 +27,9 @@ module state_counters #(
         parameter integer WORD_SIZE = 32,
         parameter integer VERIFICATION_PINS = 2,
         parameter integer WHISBONE_ADR = 32,
-        parameter integer COUNTERSIZE = 32,
-        parameter integer REGDIRSIZE = 5,
-        parameter integer REGISTERS = 32,
+        parameter integer COUNTERSIZE = 16,
+        parameter integer REGDIRSIZE = 4,
+        parameter integer REGISTERS = 16,
         parameter [19:0]  ADDRBASE     = 20'h3000_0
     )
     (
@@ -162,7 +162,7 @@ module state_counters #(
             corrected_errors[15]   <= {COUNTERSIZE {1'b0}}; 
             uncorrected_errors[15] <= {COUNTERSIZE {1'b0}}; 
             // 16
-            writes_register[16]    <= {COUNTERSIZE {1'b0}}; 
+            /*writes_register[16]    <= {COUNTERSIZE {1'b0}}; 
             reads_register[16]     <= {COUNTERSIZE {1'b0}}; 
             corrected_errors[16]   <= {COUNTERSIZE {1'b0}}; 
             uncorrected_errors[16] <= {COUNTERSIZE {1'b0}}; 
@@ -236,11 +236,11 @@ module state_counters #(
             reads_register[30]     <= {COUNTERSIZE {1'b0}}; 
             corrected_errors[30]   <= {COUNTERSIZE {1'b0}}; 
             uncorrected_errors[30] <= {COUNTERSIZE {1'b0}}; 
-            // 28
+            // 31
             writes_register[31]    <= {COUNTERSIZE {1'b0}}; 
             reads_register[31]     <= {COUNTERSIZE {1'b0}}; 
             corrected_errors[31]   <= {COUNTERSIZE {1'b0}}; 
-            uncorrected_errors[31] <= {COUNTERSIZE {1'b0}}; 
+            uncorrected_errors[31] <= {COUNTERSIZE {1'b0}}; */
            
             ready_o <= 1'b0;
         end
@@ -267,50 +267,50 @@ module state_counters #(
                 4'h0: begin
                     ready_o <= 1'b1;
                     if (wbs_we_i) begin
-                        if (wstrb_i[0]) reads_register[wbs_adr_i[8:4]][7:0]   <= wdata_i[7:0];
-                        if (wstrb_i[1]) reads_register[wbs_adr_i[8:4]][15:8]  <= wdata_i[15:8];
-                        if (wstrb_i[2]) reads_register[wbs_adr_i[8:4]][23:16] <= wdata_i[23:16];
-                        if (wstrb_i[3]) reads_register[wbs_adr_i[8:4]][31:24] <= wdata_i[31:24];
+                        if (wstrb_i[0]) reads_register[wbs_adr_i[7:4]][7:0]   <= wdata_i[7:0];
+                        if (wstrb_i[1]) reads_register[wbs_adr_i[7:4]][15:8]  <= wdata_i[15:8];
+                        //if (wstrb_i[2]) reads_register[wbs_adr_i[7:4]][23:16] <= wdata_i[23:16];
+                        //if (wstrb_i[3]) reads_register[wbs_adr_i[7:4]][31:24] <= wdata_i[31:24];
                     end
                     else begin
-                        rdata_o <= {reads_register[wbs_adr_i[8:4]]};
+                        rdata_o <= {{REGDIRSIZE {1'b0}}, reads_register[wbs_adr_i[7:4]]};
                     end
 
                 end
                 4'h4: begin
                     ready_o <= 1'b1;
                     if (wbs_we_i) begin
-                        if (wstrb_i[0]) writes_register[wbs_adr_i[8:4]][7:0]   <= wdata_i[7:0];
-                        if (wstrb_i[1]) writes_register[wbs_adr_i[8:4]][15:8]  <= wdata_i[15:8];
-                        if (wstrb_i[2]) writes_register[wbs_adr_i[8:4]][23:16] <= wdata_i[23:16];
-                        if (wstrb_i[3]) writes_register[wbs_adr_i[8:4]][31:24] <= wdata_i[31:24];
+                        if (wstrb_i[0]) writes_register[wbs_adr_i[7:4]][7:0]   <= wdata_i[7:0];
+                        if (wstrb_i[1]) writes_register[wbs_adr_i[7:4]][15:8]  <= wdata_i[15:8];
+                        //if (wstrb_i[2]) writes_register[wbs_adr_i[7:4]][23:16] <= wdata_i[23:16];
+                        //if (wstrb_i[3]) writes_register[wbs_adr_i[7:4]][31:24] <= wdata_i[31:24];
                     end
                     else begin
-                        rdata_o <= {writes_register[wbs_adr_i[8:4]]};
+                        rdata_o <= {{REGDIRSIZE {1'b0}}, writes_register[wbs_adr_i[7:4]]};
                     end
                 end
                 4'h8: begin
                     ready_o <= 1'b1;
                     if (wbs_we_i) begin
-                        if (wstrb_i[0]) corrected_errors[wbs_adr_i[8:4]][7:0]   <= wdata_i[7:0];
-                        if (wstrb_i[1]) corrected_errors[wbs_adr_i[8:4]][15:8]  <= wdata_i[15:8];
-                        if (wstrb_i[2]) corrected_errors[wbs_adr_i[8:4]][23:16] <= wdata_i[23:16];
-                        if (wstrb_i[3]) corrected_errors[wbs_adr_i[8:4]][31:24] <= wdata_i[31:24];
+                        if (wstrb_i[0]) corrected_errors[wbs_adr_i[7:4]][7:0]   <= wdata_i[7:0];
+                        if (wstrb_i[1]) corrected_errors[wbs_adr_i[7:4]][15:8]  <= wdata_i[15:8];
+                        //if (wstrb_i[2]) corrected_errors[wbs_adr_i[7:4]][23:16] <= wdata_i[23:16];
+                        //if (wstrb_i[3]) corrected_errors[wbs_adr_i[7:4]][31:24] <= wdata_i[31:24];
                     end
                     else begin
-                        rdata_o <= {corrected_errors[wbs_adr_i[8:4]]};
+                        rdata_o <= {{REGDIRSIZE {1'b0}},corrected_errors[wbs_adr_i[7:4]]};
                     end
                 end
                 4'hC: begin
                     ready_o <= 1'b1;
                     if (wbs_we_i) begin
-                        if (wstrb_i[0]) uncorrected_errors[wbs_adr_i[8:4]][7:0]   <= wdata_i[7:0];
-                        if (wstrb_i[1]) uncorrected_errors[wbs_adr_i[8:4]][15:8]  <= wdata_i[15:8];
-                        if (wstrb_i[2]) uncorrected_errors[wbs_adr_i[8:4]][23:16] <= wdata_i[23:16];
-                        if (wstrb_i[3]) uncorrected_errors[wbs_adr_i[8:4]][31:24] <= wdata_i[31:24];
+                        if (wstrb_i[0]) uncorrected_errors[wbs_adr_i[7:4]][7:0]   <= wdata_i[7:0];
+                        if (wstrb_i[1]) uncorrected_errors[wbs_adr_i[7:4]][15:8]  <= wdata_i[15:8];
+                        //if (wstrb_i[2]) uncorrected_errors[wbs_adr_i[7:4]][23:16] <= wdata_i[23:16];
+                        //if (wstrb_i[3]) uncorrected_errors[wbs_adr_i[7:4]][31:24] <= wdata_i[31:24];
                     end
                     else begin
-                        rdata_o <= {uncorrected_errors[wbs_adr_i[8:4]]};
+                        rdata_o <= {{REGDIRSIZE {1'b0}},uncorrected_errors[wbs_adr_i[7:4]]};
                     end
                 end
                 default: ready_o <= 1'b0;
@@ -325,11 +325,11 @@ module state_counters #(
                     if (wbs_we_i) begin
                         if (wstrb_i[0]) total_reads_registers[7:0]   <= wdata_i[7:0];
                         if (wstrb_i[1]) total_reads_registers[15:8]  <= wdata_i[15:8];
-                        if (wstrb_i[2]) total_reads_registers[23:16] <= wdata_i[23:16];
-                        if (wstrb_i[3]) total_reads_registers[31:24] <= wdata_i[31:24];
+                        //if (wstrb_i[2]) total_reads_registers[23:16] <= wdata_i[23:16];
+                        //if (wstrb_i[3]) total_reads_registers[31:24] <= wdata_i[31:24];
                     end
                     else begin
-                        rdata_o <= {total_reads_registers};
+                        rdata_o <= {{REGDIRSIZE {1'b0}}, total_reads_registers};
                     end
 
                 end
@@ -338,11 +338,11 @@ module state_counters #(
                     if (wbs_we_i) begin
                         if (wstrb_i[0]) total_writes_registers[7:0]   <= wdata_i[7:0];
                         if (wstrb_i[1]) total_writes_registers[15:8]  <= wdata_i[15:8];
-                        if (wstrb_i[2]) total_writes_registers[23:16] <= wdata_i[23:16];
-                        if (wstrb_i[3]) total_writes_registers[31:24] <= wdata_i[31:24];
+                        //if (wstrb_i[2]) total_writes_registers[23:16] <= wdata_i[23:16];
+                        //if (wstrb_i[3]) total_writes_registers[31:24] <= wdata_i[31:24];
                     end
                     else begin
-                        rdata_o <= {total_writes_registers};
+                        rdata_o <= {{REGDIRSIZE {1'b0}}, total_writes_registers};
                     end
                 end
                 4'h8: begin
@@ -350,11 +350,11 @@ module state_counters #(
                     if (wbs_we_i) begin
                         if (wstrb_i[0]) total_corrected_errors[7:0]   <= wdata_i[7:0];
                         if (wstrb_i[1]) total_corrected_errors[15:8]  <= wdata_i[15:8];
-                        if (wstrb_i[2]) total_corrected_errors[23:16] <= wdata_i[23:16];
-                        if (wstrb_i[3]) total_corrected_errors[31:24] <= wdata_i[31:24];
+                        //if (wstrb_i[2]) total_corrected_errors[23:16] <= wdata_i[23:16];
+                        //if (wstrb_i[3]) total_corrected_errors[31:24] <= wdata_i[31:24];
                     end
                     else begin
-                        rdata_o <= {total_corrected_errors};
+                        rdata_o <= {{REGDIRSIZE {1'b0}}, total_corrected_errors};
                     end
                 end
                 4'hC: begin
@@ -362,11 +362,11 @@ module state_counters #(
                     if (wbs_we_i) begin
                         if (wstrb_i[0]) total_uncorrected_errors[7:0]   <= wdata_i[7:0];
                         if (wstrb_i[1]) total_uncorrected_errors[15:8]  <= wdata_i[15:8];
-                        if (wstrb_i[2]) total_uncorrected_errors[23:16] <= wdata_i[23:16];
-                        if (wstrb_i[3]) total_uncorrected_errors[31:24] <= wdata_i[31:24];
+                        //if (wstrb_i[2]) total_uncorrected_errors[23:16] <= wdata_i[23:16];
+                        //if (wstrb_i[3]) total_uncorrected_errors[31:24] <= wdata_i[31:24];
                     end
                     else begin
-                        rdata_o <= {total_uncorrected_errors};
+                        rdata_o <= {{REGDIRSIZE {1'b0}}, total_uncorrected_errors};
                     end
                 end
                 default: ready_o <= 1'b1; // if is not one put 1 to continue the wisbone execution if the addrss is bad
