@@ -1,0 +1,16 @@
+"input" in: gf180mcu_density.lydrc:15
+    Polygons (raw): 0 (flat)  0 (hierarchical)
+    Elapsed: 0.020s  Memory: 914.00M
+"area" in: gf180mcu_density.lydrc:17
+    Elapsed: 0.000s  Memory: 914.00M
+"polygons" in: gf180mcu_density.lydrc:19
+    Polygons (raw): 1221257 (flat)  291 (hierarchical)
+    Elapsed: 0.160s  Memory: 939.00M
+"area" in: gf180mcu_density.lydrc:19
+    Elapsed: 1.420s  Memory: 953.00M
+comp_density is Infinity
+"output" in: gf180mcu_density.lydrc:22
+    Polygons (raw): 0 (flat)  0 (hierarchical)
+    Elapsed: 0.140s  Memory: 953.00M
+Writing report database: /home/storage/programs/chip_making/space_shuttle_gf_node/precheck_results/03_DEC_2022___21_44_27/outputs/reports/klayout_met_min_ca_density_check.xml ..
+Total elapsed: 4.550s  Memory: 917.00M
